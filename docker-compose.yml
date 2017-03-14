@@ -1,0 +1,28 @@
+version: '2'
+services:
+  wordpress:
+    image: visiblevc/wordpress:latest
+    ports:
+      - 8080:80
+      - 443:443
+    volumes:
+      - ./data:/data
+      - ./wp-content/uploads:/app/wp-content/uploads
+      - ./aaron:/app/wp-content/themes/aaron
+      - ./aaron-childtheme:/app/wp-content/themes/aaron-childtheme
+    environment:
+      DB_HOST: db
+      DB_NAME: wordpress
+      DB_PASS: root
+      THEMES: >-
+        aaron,
+        aaron-childtheme
+      WP_DEBUG: 'true'
+  db:
+    image: mariadb:10 # or mysql:5.7
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+volumes:
+  data:
